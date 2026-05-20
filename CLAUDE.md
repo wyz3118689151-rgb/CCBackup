@@ -22,20 +22,19 @@
 
 每次完成任务后，自动执行以下步骤：
 
-**判断备份目标：**
-- 当前工作目录是某个项目（有自己的 git repo）→ 备份到该项目仓库
-- 当前修改的是全局配置文件（如 `~/.claude/` 下的文件）→ 切换到 CCBackup 仓库（`C:\Users\Admin\Documents\CCBackup` 或对应路径）执行备份
+**判断备份目标（按修改的文件，不是工作目录）：**
+- 本次修改涉及 `~/.claude/` 下的文件 → 先将改动文件同步到 CCBackup（`C:\Users\Admin\Documents\CCBackup`），再在该仓库执行备份，`[project-name]` 用 `global`
+- 本次修改的是项目文件 → 直接在该项目仓库执行备份，`[project-name]` 用当前目录文件夹名
 
 **执行命令：**
 ```
 git add .
 git commit -m "chk: [project-name] [动作+对象]"
-git tag "checkpoint-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
-git push --tags
+git tag "checkpoint-$(date +%Y%m%d-%H%M%S)"
+git push origin main --tags
 ```
 
 **规则：**
-- `[project-name]` 取当前工作目录的文件夹名，全局文件统一用 `global`
 - commit message 描述本次任务做了什么，例如 `chk: my-app add user login` / `chk: global update CLAUDE.md backup rules`
 - 回滚由用户自行 `git checkout <tag>`，无需主动提示或辅助
 

@@ -31,6 +31,7 @@
 git add .
 git commit -m "chk: [project-name] [动作+对象]"
 git tag "checkpoint-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+git push --tags
 ```
 
 **规则：**
